@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>מראת התודעה | שאלון מיפוי ודיוק אישי</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&family=Assistant:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --violet-deep: #3B1E63;
+    --violet-mid: #5B3488;
+    --lavender: #D8C9EE;
+    --lavender-pale: #F1EBFA;
+    --cream: #FBF7F1;
+    --pearl: #FFFFFF;
+    --gold: #B98D4A;
+    --gold-soft: #E7CFA3;
+    --ink: #2B1D3D;
+    --ink-soft: #6B5C82;
+    --danger: #A3455A;
+    --shadow-soft: 0 10px 30px rgba(59, 30, 99, 0.10);
+    --shadow-card: 0 4px 18px rgba(59, 30, 99, 0.08);
+    --radius-lg: 22px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0;
+    padding: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Assistant', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+
+  body{
+    background-image:
+      radial-gradient(ellipse at 15% 0%, rgba(216,201,238,0.35) 0%, rgba(216,201,238,0) 45%),
+      radial-gradient(ellipse at 85% 8%, rgba(185,141,74,0.10) 0%, rgba(185,141,74,0) 40%);
+  }
+
+  h1, h2, h3{
+    font-family: 'Heebo', sans-serif;
+    margin: 0;
+    color: var(--violet-deep);
+  }
+
+  /* ---------- Progress bar ---------- */
+  .progress-wrap{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(251, 247, 241, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 14px 18px 12px;
+    border-bottom: 1px solid rgba(59,30,99,0.08);
+  }
+  .progress-label{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+  .progress-label b{ color: var(--violet-deep); font-weight: 700; }
+  .progress-track{
+    height: 7px;
+    background: var(--lavender-pale);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill{
+    height: 100%;
+    width: 0%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--violet-mid), var(--gold));
+    transition: width 0.4s ease;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding: 38px 22px 30px;
+    text-align: center;
+  }
+  .hero .glyph{
+    font-size: 2.1rem;
+    display: block;
+    margin-bottom: 10px;
+  }
+  .hero h1{
+    font-size: 1.65rem;
+    font-weight: 800;
+    line-height: 1.35;
+  }
+  .hero .subtitle{
+    margin-top: 8px;
+    font-size: 1rem;
+    color: var(--violet-mid);
+    font-weight: 500;
+  }
+  .hero .intro{
+    max-width: 560px;
+    margin: 20px auto 0;
+    font-size: 0.97rem;
+    line-height: 1.85;
+    color: var(--ink-soft);
+    background: var(--pearl);
+    border: 1px solid rgba(185,141,74,0.25);
+    border-radius: var(--radius-lg);
+    padding: 20px 20px;
+    box-shadow: var(--shadow-card);
+    text-align: right;
+  }
+  .hero .intro .signature{
+    display: block;
+    margin-top: 12px;
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  /* ---------- Section headers (the 5 circles + open questions) ---------- */
+  .section{
+    padding: 6px 16px 28px;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .section-head{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 30px 6px 16px;
+  }
+  .section-head .badge{
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 50%;
+    background: linear-gradient(160deg, var(--violet-mid), var(--violet-deep));
+    color: var(--gold-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    box-shadow: var(--shadow-soft);
+  }
+  .section-head h2{
+    font-size: 1.12rem;
+    font-weight: 700;
+  }
+  .section-head p{
+    margin: 2px 0 0;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Cards ---------- */
+  .card{
+    background: var(--pearl);
+    border-radius: var(--radius-lg);
+    padding: 20px 18px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid rgba(59,30,99,0.06);
+  }
+  .card .q-title{
+    font-family: 'Heebo', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--violet-deep);
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .card .q-number{
+    color: var(--gold);
+    font-weight: 800;
+    margin-left: 6px;
+  }
+
+  textarea{
+    width: 100%;
+    min-height: 110px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--lavender);
+    background: var(--lavender-pale);
+    padding: 14px;
+    font-family: 'Assistant', sans-serif;
+    font-size: 0.98rem;
+    color: var(--ink);
+    resize: vertical;
+    line-height: 1.6;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  textarea:focus{
+    outline: none;
+    border-color: var(--violet-mid);
+    box-shadow: 0 0 0 4px rgba(91,52,136,0.12);
+    background: var(--pearl);
+  }
+  textarea::placeholder{ color: #9C8CB4; }
+
+  /* ---------- Radio cards (answer options) ---------- */
+  .options{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .option{
+    position: relative;
+  }
+  .option input[type="radio"]{
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+  .option label{
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 13px 14px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid rgba(59,30,99,0.12);
+    background: var(--cream);
+    cursor: pointer;
+    font-size: 0.94rem;
+    line-height: 1.55;
+    color: var(--ink);
+    transition: all 0.18s ease;
+  }
+  .option .letter{
+    flex: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--lavender);
+    background: var(--pearl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--violet-mid);
+    transition: all 0.18s ease;
+  }
+  .option label:active{ transform: scale(0.99); }
+  .option input[type="radio"]:checked + label{
+    border-color: var(--violet-mid);
+    background: linear-gradient(135deg, var(--lavender-pale), #FBF3E4);
+    box-shadow: 0 6px 16px rgba(91,52,136,0.14);
+  }
+  .option input[type="radio"]:checked + label .letter{
+    background: linear-gradient(160deg, var(--violet-mid), var(--violet-deep));
+    border-color: var(--violet-deep);
+    color: var(--gold-soft);
+  }
+  .option input[type="radio"]:focus-visible + label{
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+
+  /* ---------- Footer / submit ---------- */
+  .footer{
+    max-width: 640px;
+    margin: 10px auto 60px;
+    padding: 0 20px;
+    text-align: center;
+  }
+  .footer-note{
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    line-height: 1.8;
+    margin-bottom: 18px;
+  }
+  #incomplete-note{
+    font-size: 0.85rem;
+    color: var(--danger);
+    margin-bottom: 14px;
+    min-height: 1.2em;
+  }
+  .submit-btn{
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    padding: 18px 20px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--cream);
+    background: linear-gradient(120deg, var(--violet-deep), var(--violet-mid) 55%, var(--gold) 130%);
+    border-radius: 99px;
+    box-shadow: 0 12px 28px rgba(59,30,99,0.28);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .submit-btn:active{
+    transform: scale(0.98);
+    box-shadow: 0 6px 16px rgba(59,30,99,0.24);
+  }
+  /* כרטיסיית תשלום יוקרתית */
+  .payment-card {
+    background: linear-gradient(135deg, #FFFFFF, var(--lavender-pale));
+    border: 2px solid var(--gold);
+    border-radius: var(--radius-lg);
+    padding: 24px 20px;
+    margin: 24px auto;
+    max-width: 640px;
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+  }
+  .payment-card h3 {
+    font-family: 'Heebo', sans-serif;
+    font-size: 1.25rem;
+    color: var(--violet-deep);
+    margin-bottom: 8px;
+  }
+  .payment-price {
+    font-family: 'Heebo', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--gold);
+    margin: 10px 0;
+  }
+  .payment-note-body{
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-top: 4px;
+  }
+  .payment-phone{
+    font-weight: 700;
+    color: var(--gold);
+    direction: ltr;
+    unicode-bidi: embed;
+  }
+  .payment-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .btn-pay-bit {
+    display: block;
+    text-decoration: none;
+    background: #00ADEF; /* צבע כחול ביט */
+    color: #FFFFFF;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 14px 20px;
+    border-radius: 99px;
+    box-shadow: 0 4px 14px rgba(0, 173, 239, 0.35);
+    transition: transform 0.15s ease;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-pay-bit:active {
+    transform: scale(0.98);
+  }
+  .btn-copy-pay {
+    background: var(--pearl);
+    border: 1.5px solid var(--violet-mid);
+    color: var(--violet-deep);
+    font-family: 'Heebo', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 12px 20px;
+    border-radius: 99px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .btn-copy-pay:active {
+    background: var(--lavender-pale);
+  }
+
+  .toast{
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--violet-deep);
+    color: var(--cream);
+    padding: 13px 22px;
+    border-radius: 99px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 100;
+    white-space: nowrap;
+  }
+  .toast.show{
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @media (min-width: 640px){
+    .hero h1{ font-size: 1.9rem; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>מפת הדיוק שלך</span>
+      <span><b id="progress-percent">0%</b> הושלם</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <span class="glyph">🪞</span>
+    <h1>מראת התודעה</h1>
+    <div class="subtitle">שאלון מיפוי ודיוק אישי — אבחון דפוסי עומק לקראת שיחת פיצוח ולייזר ממוקדת</div>
+    <div class="intro">
+      החיים שלנו הם השתקפות של מה שמתחולל עמוק בפנים. מחקרים מראים כי קרוב ל-95% מההחלטות, התגובות והתוצאות שלנו ביומיום מנוהלים על ידי תת-המודע. שאלון זה נועד להניח מולך מראה צלולה, לאתר את הנקודות שבהן האנרגיה שלך נעצרת, ולהוות את הבסיס המדויק לשיחת הפיצוח שלנו.
+      <span class="signature">ענו בספונטניות ומתוך הלב.</span>
+    </div>
+  </header>
+
+  <form id="quiz-form">
+
+    <!-- ===================== חלק א׳ - שאלות פתוחות ===================== -->
+    <section class="section">
+      <div class="section-head">
+        <div class="badge">✍️</div>
+        <div>
+          <h2>שאלות עומק ומיפוי ראשוני</h2>
+          <p>שתי שאלות פתוחות לכתיבה חופשית</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="q-title">היכן נעצרת הזרימה?</div>
+        <p style="font-size:0.88rem;color:var(--ink-soft);margin:-8px 0 12px;line-height:1.6;">באיזה תחום בחיים את/ה חווה כרגע פער מתסכל בין מה שרצית לבין המציאות בפועל? (זוגיות, קריירה, כסף, בריאות, יחסים עם עצמך)</p>
+        <textarea name="open1" id="open1" placeholder="כתוב/י כאן בחופשיות..."></textarea>
+      </div>
+
+      <div class="card">
+        <div class="q-title">חשבון הנפש של היומיום</div>
+        <p style="font-size:0.88rem;color:var(--ink-soft);margin:-8px 0 12px;line-height:1.6;">אילו מחירים אישיים, רגשיים, אנרגטיים או כלכליים את/ה משלם/ת על כך שהמצב נשאר כפי שהוא? איך זה פוגש אותך בשגרת היום וברמת החיוניות שלך?</p>
+        <textarea name="open2" id="open2" placeholder="כתוב/י כאן בחופשיות..."></textarea>
+      </div>
+    </section>
+
+    <!-- ===================== מעגל 1 ===================== -->
+    <section class="section">
+      <div class="section-head">
+        <div class="badge">💖</div>
+        <div>
+          <h2>קרבה, אינטימיות וקבלת שפע</h2>
+          <p>שאלות 1–5</p>
+        </div>
+      </div>
+
+      <div class="card" data-q="1">
+        <div class="q-title"><span class="q-number">1.</span>כשמישהו מעניק לך הערכה עמוקה, מחמאה גדולה או רצון אמיתי להתקרב:</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q1" id="q1a" value="א"><label for="q1a"><span class="letter">א</span><span>אני מתמלא/ת שמחה, פותח/ת את הלב ומרגיש/ה בנוח להכיל את זה.</span></label></div>
+          <div class="option"><input type="radio" name="q1" id="q1b" value="ב"><label for="q1b"><span class="letter">ב</span><span>עולה בי מבוכה, רתיעה מיידית או צורך פנימי לקחת צעד אחורה.</span></label></div>
+          <div class="option"><input type="radio" name="q1" id="q1c" value="ג"><label for="q1c"><span class="letter">ג</span><span>מתעורר בי מיד חשד: "מה הוא/היא רוצה ממני? מה האינטרס הנסתר כאן?".</span></label></div>
+          <div class="option"><input type="radio" name="q1" id="q1d" value="ד"><label for="q1d"><span class="letter">ד</span><span>אני מתרגש/ת, אבל מיד נדרך/ת ונלחץ/ת מהידיעה שזה בטח ייגמר בקרוב.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="2">
+        <div class="q-title"><span class="q-number">2.</span>כשקשר קרוב (אישי, זוגי או חברי) מתחיל להתייצב ולהרגיש בטוח:</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q2" id="q2a" value="א"><label for="q2a"><span class="letter">א</span><span>מציפה אותי תחושת רוגע, ביטחון ושקט פנימי עמוק.</span></label></div>
+          <div class="option"><input type="radio" name="q2" id="q2b" value="ב"><label for="q2b"><span class="letter">ב</span><span>מתעוררת חרדה שברגע אחד הכל יתפרק ואמצא את עצמי שוב לבד.</span></label></div>
+          <div class="option"><input type="radio" name="q2" id="q2c" value="ג"><label for="q2c"><span class="letter">ג</span><span>עולה צורך לבחון שוב ושוב את הנאמנות והאמינות של הצד השני.</span></label></div>
+          <div class="option"><input type="radio" name="q2" id="q2d" value="ד"><label for="q2d"><span class="letter">ד</span><span>יש תחושת מחנק פנימית ודחף לא מוסבר לייצר ריחוק או דרמה.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="3">
+        <div class="q-title"><span class="q-number">3.</span>איך נראות בדרך כלל הציפיות שלך מאנשים קרובים?</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q3" id="q3a" value="א"><label for="q3a"><span class="letter">א</span><span>מאוזנות; אני מקבל/ת את העובדה שכל אדם פועל לפי יכולתו.</span></label></div>
+          <div class="option"><input type="radio" name="q3" id="q3b" value="ב"><label for="q3b"><span class="letter">ב</span><span>גבוהות מאוד; אני בונה תסריטים בראש, וכשהם לא מתממשים אני חווה כאב עמוק.</span></label></div>
+          <div class="option"><input type="radio" name="q3" id="q3c" value="ג"><label for="q3c"><span class="letter">ג</span><span>אין לי ציפיות מאף אחד; למדתי על בשרי שציפיות מביאות רק אכזבה.</span></label></div>
+          <div class="option"><input type="radio" name="q3" id="q3d" value="ד"><label for="q3d"><span class="letter">ד</span><span>אני מצפה שיבינו את הצרכים שלי מעצמם, וכשזה לא קורה אני נסגר/ת ונעלב/ת.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="4">
+        <div class="q-title"><span class="q-number">4.</span>כאשר נכנס לחייך שפע בלתי צפוי (סכום כסף, הזדמנות טובה או הצלחה גדולה):</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q4" id="q4a" value="א"><label for="q4a"><span class="letter">א</span><span>אני נהנה/ית מהטוב, מוקיר/ה תודה ומאפשר/ת לשפע להתבסס.</span></label></div>
+          <div class="option"><input type="radio" name="q4" id="q4b" value="ב"><label for="q4b"><span class="letter">ב</span><span>יש דחף פנימי "להיפטר" ממנו מהר דרך הוצאות פתאומיות, חלוקה לאחרים או קניות דחופות.</span></label></div>
+          <div class="option"><input type="radio" name="q4" id="q4c" value="ג"><label for="q4c"><span class="letter">ג</span><span>מתעורר פחד מיידי ש"אחרי כל טוב מגיעה מכה" ושמשהו עומד להשתבש.</span></label></div>
+          <div class="option"><input type="radio" name="q4" id="q4d" value="ד"><label for="q4d"><span class="letter">ד</span><span>אני מקטין/ה את זה מיד ומסביר/ה לעצמי ולאחרים שזה היה סתם עניין של מזל.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="5">
+        <div class="q-title"><span class="q-number">5.</span>כאשר מתעוררת אי-הבנה או ריחוק זמני בקשר חשוב:</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q5" id="q5a" value="א"><label for="q5a"><span class="letter">א</span><span>אני יוזם/ת שיחה בהירה, עניינית ופתוחה בגובה העיניים.</span></label></div>
+          <div class="option"><input type="radio" name="q5" id="q5b" value="ב"><label for="q5b"><span class="letter">ב</span><span>המחשבה הראשונה שלי היא: "זהו, נמאס לו/לה ממני, עדיף שאקדים ואתרחק בעצמי".</span></label></div>
+          <div class="option"><input type="radio" name="q5" id="q5c" value="ג"><label for="q5c"><span class="letter">ג</span><span>אני בטוח/ה שמסתירים ממני דברים ושנעשים מהלכים מאחורי גבי.</span></label></div>
+          <div class="option"><input type="radio" name="q5" id="q5d" value="ד"><label for="q5d"><span class="letter">ד</span><span>אני מרגיש/ה עלבון צורב ותחושה ששוב פגעו בי במכוון.</span></label></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== מעגל 2 ===================== -->
+    <section class="section">
+      <div class="section-head">
+        <div class="badge">👑</div>
+        <div>
+          <h2>המקום שלי, הקול הפנימי וההגדרה העצמית</h2>
+          <p>שאלות 6–10</p>
+        </div>
+      </div>
+
+      <div class="card" data-q="6">
+        <div class="q-title"><span class="q-number">6.</span>בשיחה משפחתית, מפגש חברתי או דיון עבודה, כשדעתך שונה ממה שנאמר:</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q6" id="q6a" value="א"><label for="q6a"><span class="letter">א</span><span>אני משמיע/ה את קולי בביטחון, בבהירות וברוגע.</span></label></div>
+          <div class="option"><input type="radio" name="q6" id="q6b" value="ב"><label for="q6b"><span class="letter">ב</span><span>אני מאוד רוצה לדבר, אבל קול פנימי משתיק אותי ואני בולע/ת את המילים.</span></label></div>
+          <div class="option"><input type="radio" name="q6" id="q6c" value="ג"><label for="q6c"><span class="letter">ג</span><span>אני מהנהן/ת ומסכים/ה עם כולם רק כדי לשמור על השקט ולא לייצר עימות.</span></label></div>
+          <div class="option"><input type="radio" name="q6" id="q6d" value="ד"><label for="q6d"><span class="letter">ד</span><span>אני מוותר/ת מראש מתוך תחושה ש"הדעה שלי ממילא לא באמת חשובה לאיש".</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="7">
+        <div class="q-title"><span class="q-number">7.</span>עד כמה ברור לך מה הרצונות, הגבולות והצרכים האמיתיים שלך כרגע?</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q7" id="q7a" value="א"><label for="q7a"><span class="letter">א</span><span>ברור לי לחלוטין ואני מתנהל/ת לאורם מתוך נאמנות לעצמי.</span></label></div>
+          <div class="option"><input type="radio" name="q7" id="q7b" value="ב"><label for="q7b"><span class="letter">ב</span><span>אני יודע/ת מה אני רוצה, אך בפועל תמיד מציב/ה את צרכי האחרים לפניי.</span></label></div>
+          <div class="option"><input type="radio" name="q7" id="q7c" value="ג"><label for="q7c"><span class="letter">ג</span><span>לעיתים קרובות אני חווה תחושת ריקנות ואיני יודע/ת מה באמת משמח אותי.</span></label></div>
+          <div class="option"><input type="radio" name="q7" id="q7d" value="ד"><label for="q7d"><span class="letter">ד</span><span>קל לי בהרבה להתחבר לרצונות של אחרים, לרצות אותם ולחיות דרכם.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="8">
+        <div class="q-title"><span class="q-number">8.</span>כשתוכנית חשובה או יעד שהצבת לעצמך לא מסתדרים כמתוכנן:</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q8" id="q8a" value="א"><label for="q8a"><span class="letter">א</span><span>אני מתבונן/ת במה שקרה, מפיק/ה לקחים וממשיך/ה קדימה מתוך סקרנות.</span></label></div>
+          <div class="option"><input type="radio" name="q8" id="q8b" value="ב"><label for="q8b"><span class="letter">ב</span><span>עולה בי שיפוט ארסי: "אני כישלון, ידעתי שממילא לא אצליח".</span></label></div>
+          <div class="option"><input type="radio" name="q8" id="q8c" value="ג"><label for="q8c"><span class="letter">ג</span><span>מציפה אותי תחושת אשמה שאני תמיד מאכזב/ת את מי שמאמין בי.</span></label></div>
+          <div class="option"><input type="radio" name="q8" id="q8d" value="ד"><label for="q8d"><span class="letter">ד</span><span>אני מאשים/ה את עצמי שלקחתי על עצמי משהו שגדול עליי ונסוג/ה לאחור.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="9">
+        <div class="q-title"><span class="q-number">9.</span>איך את/ה מגיב/ה כשמישהו עוקץ אותך, מזלזל בך או מקטין את ערכך?</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q9" id="q9a" value="א"><label for="q9a"><span class="letter">א</span><span>אני מציב/ה גבול חד, ענייני ולא מתנצל באותו הרגע.</span></label></div>
+          <div class="option"><input type="radio" name="q9" id="q9b" value="ב"><label for="q9b"><span class="letter">ב</span><span>אני צוחק/ת יחד איתו/איתה ומקטין/ה את עצמי בהומור עצמי כדי לטשטש את המבוכה.</span></label></div>
+          <div class="option"><input type="radio" name="q9" id="q9c" value="ג"><label for="q9c"><span class="letter">ג</span><span>אני קופא/ת, שותק/ת ונשרף/ת מבפנים מעלבון, אך כלפי חוץ משדר/ת "עסקים כרגיל".</span></label></div>
+          <div class="option"><input type="radio" name="q9" id="q9d" value="ד"><label for="q9d"><span class="letter">ד</span><span>עולה בי מחשבה שאולי באיזשהו מקום מגיע לי היחס הזה כי טעיתי.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="10">
+        <div class="q-title"><span class="q-number">10.</span>כששואלים אותך "מי את/ה ומה הערך המיוחד שאת/ה מביא/ה לעולם?":</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q10" id="q10a" value="א"><label for="q10a"><span class="letter">א</span><span>טבעי ונעים לי לשתף בעוצמות, במתנות ובמשאבים הייחודיים שלי.</span></label></div>
+          <div class="option"><input type="radio" name="q10" id="q10b" value="ב"><label for="q10b"><span class="letter">ב</span><span>אני חווה כיווץ, מבוכה ורצון עז להחליף נושא או להפוך לבלתי נראה/ית.</span></label></div>
+          <div class="option"><input type="radio" name="q10" id="q10c" value="ג"><label for="q10c"><span class="letter">ג</span><span>אני באמת ובתמים מרגיש/ה שאין בי משהו מיוחד או יוצא דופן מאחרים.</span></label></div>
+          <div class="option"><input type="radio" name="q10" id="q10d" value="ד"><label for="q10d"><span class="letter">ד</span><span>אני מתאר/ת את עצמי רק דרך התפקידים שלי עבור אחרים (הורה, בן/בת, בן/בת זוג, בעל/ת תפקיד).</span></label></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== מעגל 3 ===================== -->
+    <section class="section">
+      <div class="section-head">
+        <div class="badge">🌊</div>
+        <div>
+          <h2>המפגש עם הרגש, הפגיעות והגוף</h2>
+          <p>שאלות 11–15</p>
+        </div>
+      </div>
+
+      <div class="card" data-q="11">
+        <div class="q-title"><span class="q-number">11.</span>כשמציף אותך רגש עז של עצב, פחד, כאב או בכי:</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q11" id="q11a" value="א"><label for="q11a"><span class="letter">א</span><span>אני נותן/ת לגל לעבור בגוף, נושם/ת ומאפשר/ת לו להתפרק בטבעיות.</span></label></div>
+          <div class="option"><input type="radio" name="q11" id="q11b" value="ב"><label for="q11b"><span class="letter">ב</span><span>אני מיד עוצר/ת הכל, נועל/ת את הרגש ובורח/ת לעשייה טכנית ומשימות דחופות.</span></label></div>
+          <div class="option"><input type="radio" name="q11" id="q11c" value="ג"><label for="q11c"><span class="letter">ג</span><span>אני כועס/ת על עצמי שאני "חלש/ה", ומזכיר/ה לעצמי שאסור להישבר.</span></label></div>
+          <div class="option"><input type="radio" name="q11" id="q11d" value="ד"><label for="q11d"><span class="letter">ד</span><span>אני חווה הצפה כסכנה ממשית ומתנתק/ת מהגוף לחלוטין, עד חוסר תחושה.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="12">
+        <div class="q-title"><span class="q-number">12.</span>איך את/ה מגיב/ה כשמישהו בסביבתך נשבר, בוכה או מביע רגשות סוערים?</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q12" id="q12a" value="א"><label for="q12a"><span class="letter">א</span><span>בהקשבה נקייה, חמלה, נוכחות יציבה והכלה שקטה.</span></label></div>
+          <div class="option"><input type="radio" name="q12" id="q12b" value="ב"><label for="q12b"><span class="letter">ב</span><span>באי-נוחות פיזית עמוקה ורצון עז לתת פתרון פרקטי ומהיר רק שיפסיק.</span></label></div>
+          <div class="option"><input type="radio" name="q12" id="q12c" value="ג"><label for="q12c"><span class="letter">ג</span><span>עולה בי שיפוטיות וראייה של ההתנהגות הזו כחולשה או מניפולציה.</span></label></div>
+          <div class="option"><input type="radio" name="q12" id="q12d" value="ד"><label for="q12d"><span class="letter">ד</span><span>אני נשאב/ת לתוכו לחלוטין, בוכה ומרגיש/ה את הכאב שלו פיזית בתוכי.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="13">
+        <div class="q-title"><span class="q-number">13.</span>בתקופות של מתח מתמשך, עומס יחסים או קונפליקט פנימי:</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q13" id="q13a" value="א"><label for="q13a"><span class="letter">א</span><span>אני מזהה את הסימנים הראשונים בגוף ומאט/ה את הקצב למנוחה והתכנסות.</span></label></div>
+          <div class="option"><input type="radio" name="q13" id="q13b" value="ב"><label for="q13b"><span class="letter">ב</span><span>הגוף שלי מפתח מחלה, דלקת, כאבי ראש או מיגרנות שמחייבים אותי לשכב.</span></label></div>
+          <div class="option"><input type="radio" name="q13" id="q13c" value="ג"><label for="q13c"><span class="letter">ג</span><span>אני מתעלם/ת מתלונות הגוף, שם/ה את עצמי בצד וממשיך/ה לתפקד עד קריסה.</span></label></div>
+          <div class="option"><input type="radio" name="q13" id="q13d" value="ד"><label for="q13d"><span class="letter">ד</span><span>שרירי הכתפיים, הגב התחתון והלסתות ננעלים והנשימה שלי נעשית שטחית וקצרה.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="14">
+        <div class="q-title"><span class="q-number">14.</span>כששואלים אותך בכנות באמצע יום סוער "מה שלומך ואיך את/ה מרגיש/ה כרגע?":</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q14" id="q14a" value="א"><label for="q14a"><span class="letter">א</span><span>אני מחובר/ת לתחושות הגוף ויודע/ת להגדיר במדויק מה עובר עליי.</span></label></div>
+          <div class="option"><input type="radio" name="q14" id="q14b" value="ב"><label for="q14b"><span class="letter">ב</span><span>אני עונה אוטומטית "הכל מעולה/רגיל", בלי לבדוק בכלל מה באמת קורה בפנים.</span></label></div>
+          <div class="option"><input type="radio" name="q14" id="q14c" value="ג"><label for="q14c"><span class="letter">ג</span><span>עולה בי קוצר רוח: "אין לי מושג מה אני מרגיש/ה, עזבו אותי משאלות כאלה".</span></label></div>
+          <div class="option"><input type="radio" name="q14" id="q14d" value="ד"><label for="q14d"><span class="letter">ד</span><span>במקום רגש, אני עונה ברשימה ארוכה של מטלות שכבר עשיתי או שעליי להספיק.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="15">
+        <div class="q-title"><span class="q-number">15.</span>מתי בפעם האחרונה שיתפת אדם קרוב בפגיעות אמיתית או בפחד העמוק ביותר שלך?</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q15" id="q15a" value="א"><label for="q15a"><span class="letter">א</span><span>לאחרונה; יש סביבי מרחב בטוח שבו אני מרשה לעצמי להיראות כפי שאני.</span></label></div>
+          <div class="option"><input type="radio" name="q15" id="q15b" value="ב"><label for="q15b"><span class="letter">ב</span><span>אני כמעט לא משתף/ת לעולם; חשיפת חולשות גורמת לי להרגיש חסר/ת הגנה.</span></label></div>
+          <div class="option"><input type="radio" name="q15" id="q15c" value="ג"><label for="q15c"><span class="letter">ג</span><span>ניסיתי פעם, אך מיד התחרטתי והוצפתי בבושה על כך שהעזתי להיפתח.</span></label></div>
+          <div class="option"><input type="radio" name="q15" id="q15d" value="ד"><label for="q15d"><span class="letter">ד</span><span>אני תמיד הכתובת של כולם להקשיב לצרותיהם, אבל על עצמי אני לא מדבר/ת.</span></label></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== מעגל 4 ===================== -->
+    <section class="section">
+      <div class="section-head">
+        <div class="badge">🔥</div>
+        <div>
+          <h2>אנרגיית פעולה, מיניות, תכנון מול ביצוע</h2>
+          <p>שאלות 16–20</p>
+        </div>
+      </div>
+
+      <div class="card" data-q="16">
+        <div class="q-title"><span class="q-number">16.</span>כשאת/ה ניגש/ת לקדם יעד חדש, רעיון או פרויקט שמלהיב אותך:</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q16" id="q16a" value="א"><label for="q16a"><span class="letter">א</span><span>אני בונה תוכנית צעדים מאוזנת, מתקדם/ת בהתמדה ונהנה/ית מהדרך.</span></label></div>
+          <div class="option"><input type="radio" name="q16" id="q16b" value="ב"><label for="q16b"><span class="letter">ב</span><span>אני מבריק/ה בבניית החזון והאסטרטגיה, אך כשהדבר מגיע לשלב הביצוע בשטח — הכל נתקע.</span></label></div>
+          <div class="option"><input type="radio" name="q16" id="q16c" value="ג"><label for="q16c"><span class="letter">ג</span><span>אני רץ/ה בבולדוזריות אל עבר המטרה, חסר/ת סבלנות לתהליכים ושוכח/ת לחגוג הצלחות.</span></label></div>
+          <div class="option"><input type="radio" name="q16" id="q16d" value="ד"><label for="q16d"><span class="letter">ד</span><span>אני טובע/ת באלפי פרטים טכניים שוליים ומאבד/ת לחלוטין את התמונה הגדולה.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="17">
+        <div class="q-title"><span class="q-number">17.</span>איך נחווית אצלך התכונה של "רכות, הכלה וסבלנות המאפשרת לדברים להבשיל"?</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q17" id="q17a" value="א"><label for="q17a"><span class="letter">א</span><span>כעוצמה פנימית עמוקה, קרקע פורייה ויציבה המאפשרת צמיחה אמיתית.</span></label></div>
+          <div class="option"><input type="radio" name="q17" id="q17b" value="ב"><label for="q17b"><span class="letter">ב</span><span>כמשהו חלש, איטי ומיותר שמפריע להשיג תוצאות מהירות.</span></label></div>
+          <div class="option"><input type="radio" name="q17" id="q17c" value="ג"><label for="q17c"><span class="letter">ג</span><span>כמצב מסוכן שעלול לגרום לאנשים לנצל אותי, לרמוס אותי או לזלזל בי.</span></label></div>
+          <div class="option"><input type="radio" name="q17" id="q17d" value="ד"><label for="q17d"><span class="letter">ד</span><span>כמקום נוח ונעים, אך כזה שמונע ממני להיות אסרטיבי/ת ולעמוד על שלי.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="18">
+        <div class="q-title"><span class="q-number">18.</span>מול נוכחות אסרטיבית, תקיפה או דמות סמכותית ודומיננטית:</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q18" id="q18a" value="א"><label for="q18a"><span class="letter">א</span><span>אני עומד/ת שווה בין שווים, שומר/ת על מרחב בטוח ומנהל/ת דיאלוג מכבד.</span></label></div>
+          <div class="option"><input type="radio" name="q18" id="q18b" value="ב"><label for="q18b"><span class="letter">ב</span><span>אני נדרך/ת מיד, חש/ה מאוים/ת ומפרש/ת את האסרטיביות כסכנה או תוקפנות אישית.</span></label></div>
+          <div class="option"><input type="radio" name="q18" id="q18c" value="ג"><label for="q18c"><span class="letter">ג</span><span>מתעורר בי צורך לצאת למאבק, להוכיח שאני יותר חזק/ה ולא לתת לאיש לשלוט בי.</span></label></div>
+          <div class="option"><input type="radio" name="q18" id="q18d" value="ד"><label for="q18d"><span class="letter">ד</span><span>אני מקטין/ה את עצמי מיד, עובר/ת למוד ריצוי ועושה הכל כדי שלא יכעסו עליי.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="19">
+        <div class="q-title"><span class="q-number">19.</span>ביחסים אינטימיים, במגע ובחיבור אל המיניות והגוף שלך:</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q19" id="q19a" value="א"><label for="q19a"><span class="letter">א</span><span>אני חווה שחרור, חיבור טבעי, ביטחון, עונג ותקשורת פתוחה.</span></label></div>
+          <div class="option"><input type="radio" name="q19" id="q19b" value="ב"><label for="q19b"><span class="letter">ב</span><span>אני ממוקד/ת בעיקר בעונג ובסיפוק של הצד השני ובודק/ת אם הוא/היא מרוצה.</span></label></div>
+          <div class="option"><input type="radio" name="q19" id="q19c" value="ג"><label for="q19c"><span class="letter">ג</span><span>קשה לי לחוות הנאה אמיתית; אני מרגיש/ה ניתוק מסוים מאיברי הגוף והמיניות.</span></label></div>
+          <div class="option"><input type="radio" name="q19" id="q19d" value="ד"><label for="q19d"><span class="letter">ד</span><span>האינטימיות מלווה אצלי במתח, אשמה סמויה או תחושה שמשתמשים בי.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="20">
+        <div class="q-title"><span class="q-number">20.</span>כשמגיע הרגע לקבל החלטות אסטרטגיות ולראות קדימה מעבר לאופק:</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q20" id="q20a" value="א"><label for="q20a"><span class="letter">א</span><span>אני סומך/ת על החזון, על השכל ועל האינטואיציה שלי וצועד/ת קדימה בביטחון.</span></label></div>
+          <div class="option"><input type="radio" name="q20" id="q20b" value="ב"><label for="q20b"><span class="letter">ב</span><span>קשה לי להעז ולחלום; אני תמיד מחפש/ת דמות סמכותית חיצונית שתגיד לי מה לעשות.</span></label></div>
+          <div class="option"><input type="radio" name="q20" id="q20c" value="ג"><label for="q20c"><span class="letter">ג</span><span>אני פועל/ת אך ורק על פי היגיון קר וחישובי סיכונים, ומתעלם/ת לחלוטין מתחושות בטן.</span></label></div>
+          <div class="option"><input type="radio" name="q20" id="q20d" value="ד"><label for="q20d"><span class="letter">ד</span><span>אני מעדיף/ה להיקבר בעבודה שוטפת כדי לא לפגוש שאלות מהותיות על העתיד.</span></label></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== מעגל 5 ===================== -->
+    <section class="section">
+      <div class="section-head">
+        <div class="badge">🌍</div>
+        <div>
+          <h2>תפיסת העולם, אמון וההתנהלות בחיים</h2>
+          <p>שאלות 21–25</p>
+        </div>
+      </div>
+
+      <div class="card" data-q="21">
+        <div class="q-title"><span class="q-number">21.</span>מהי תחושת הבסיס העמוקה ביותר שמלווה אותך מול החיים והעולם?</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q21" id="q21a" value="א"><label for="q21a"><span class="letter">א</span><span>העולם הוא מרחב שופע אפשרויות, אנשים טובים והזדמנויות לצמיחה.</span></label></div>
+          <div class="option"><input type="radio" name="q21" id="q21b" value="ב"><label for="q21b"><span class="letter">ב</span><span>העולם הוא מקום מאיים שצריך תמיד להישמר בו ולהיות בהיכון.</span></label></div>
+          <div class="option"><input type="radio" name="q21" id="q21c" value="ג"><label for="q21c"><span class="letter">ג</span><span>החיים הם מאבק מתמיד — שום דבר בעולם הזה לא בא בקלות וצריך לירוק דם כדי להרוויח.</span></label></div>
+          <div class="option"><input type="radio" name="q21" id="q21d" value="ד"><label for="q21d"><span class="letter">ד</span><span>הכל ארעי ולא יציב; עדיף לא לתכנן יותר מדי כדי לא לחטוף מכה כואבת.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="22">
+        <div class="q-title"><span class="q-number">22.</span>כשדברים בחיים מסתדרים "בקלות רבה מדי" או מגיעה הצלחה פתאומית וחלקה:</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q22" id="q22a" value="א"><label for="q22a"><span class="letter">א</span><span>אני מתמסר/ת להודיה, נהנה/ית מהתוצאה ומאפשר/ת לה להיות.</span></label></div>
+          <div class="option"><input type="radio" name="q22" id="q22b" value="ב"><label for="q22b"><span class="letter">ב</span><span>מתעורר בי חשד עמוק: אני מחפש/ת את המלכודת ומחכה לרגע שבו "הבלון יתפוצץ".</span></label></div>
+          <div class="option"><input type="radio" name="q22" id="q22c" value="ג"><label for="q22c"><span class="letter">ג</span><span>מציפה אותי חרדה גדולה שזה עומד להילקח ממני ושלא אצליח לשמור על זה.</span></label></div>
+          <div class="option"><input type="radio" name="q22" id="q22d" value="ד"><label for="q22d"><span class="letter">ד</span><span>אני מייצר/ת סיבוך או דרמה כדי להרגיש ש"הרווחתי את זה ביושר" דרך קושי.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="23">
+        <div class="q-title"><span class="q-number">23.</span>כשעומדת בפניך הזדמנות לעשות שינוי משמעותי ומקדם (מגורים, קריירה, הרגלים):</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q23" id="q23a" value="א"><label for="q23a"><span class="letter">א</span><span>אני בוחן/ת את הדברים באומץ ובסקרנות, ויוצא/ת לדרך בהתרגשות.</span></label></div>
+          <div class="option"><input type="radio" name="q23" id="q23b" value="ב"><label for="q23b"><span class="letter">ב</span><span>פחד עמוק משתק אותי, ואני מעדיף/ה להישאר במצב המוכר והלא-טוב — רק שלא יהיה שינוי.</span></label></div>
+          <div class="option"><input type="radio" name="q23" id="q23c" value="ג"><label for="q23c"><span class="letter">ג</span><span>אני נכנס/ת לניתוח-יתר אינסופי, בודק/ת שוב ושוב, עד שההזדמנות חומקת.</span></label></div>
+          <div class="option"><input type="radio" name="q23" id="q23d" value="ד"><label for="q23d"><span class="letter">ד</span><span>אני ממציא/ה עשרות סיבות למה "כרגע זה לא הזמן המתאים" ונסוג/ה לאזור הנוחות.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="24">
+        <div class="q-title"><span class="q-number">24.</span>כמה מקום של חופש, שמחה, קלילות ומשחק נטו קיים בסדר היום שלך?</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q24" id="q24a" value="א"><label for="q24a"><span class="letter">א</span><span>יש מקום של קבע לצחוק, הנאה וטעינת מצברים ללא שום תנאי.</span></label></div>
+          <div class="option"><input type="radio" name="q24" id="q24b" value="ב"><label for="q24b"><span class="letter">ב</span><span>כמעט שאין; הכל סובב סביב חובות, הישרדות, דאגות למחר ומטלות שאינן נגמרות.</span></label></div>
+          <div class="option"><input type="radio" name="q24" id="q24c" value="ג"><label for="q24c"><span class="letter">ג</span><span>אני חווה רגשות אשמה כבדים אם אני מעז/ה לנוח או ליהנות סתם כך באמצע היום.</span></label></div>
+          <div class="option"><input type="radio" name="q24" id="q24d" value="ד"><label for="q24d"><span class="letter">ד</span><span>אני מסוגל/ת ליהנות רק אם וידאתי שכולם סביבי מרוצים, רגועים ומסופקים.</span></label></div>
+        </div>
+      </div>
+
+      <div class="card" data-q="25">
+        <div class="q-title"><span class="q-number">25.</span>כשמתעורר אתגר, משבר בלתי צפוי או קושי גדול בדרך:</div>
+        <div class="options">
+          <div class="option"><input type="radio" name="q25" id="q25a" value="א"><label for="q25a"><span class="letter">א</span><span>המשפט הפנימי שלי הוא: "אנחנו נפרק את זה לצעדים ונתגבר בביטחון".</span></label></div>
+          <div class="option"><input type="radio" name="q25" id="q25b" value="ב"><label for="q25b"><span class="letter">ב</span><span>המשפט הפנימי שלי הוא: "למה תמיד אצלי הכל חייב להיות כל כך מסובך ומתיש?".</span></label></div>
+          <div class="option"><input type="radio" name="q25" id="q25c" value="ג"><label for="q25c"><span class="letter">ג</span><span>המשפט הפנימי שלי הוא: "נמאס לי כבר, אין לי כוח יותר להילחם ולסבול בשביל כל דבר".</span></label></div>
+          <div class="option"><input type="radio" name="q25" id="q25d" value="ד"><label for="q25d"><span class="letter">ד</span><span>המשפט הפנימי שלי הוא: "אין מה לעשות, עדיף לא לגעת בזה עכשיו והזמן יעשה את שלו".</span></label></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <p class="footer-note">
+        ✨ תודה שהקדשת מזמנך למלא את השאלון בכנות.<br>
+        התשובות שלך מהוות את המפה הראשונית למנגנוני העומק שמפעילים אותך. בשיחת הפיצוח והלייזר נחשוף את שורש הדפוסים הללו, נפרום את נקודות החסימה, ונטמיע נתיב חדש ומקדם שיחזיר לך את השקט, החיוניות וההגשמה.
+      </p>
+      <div id="incomplete-note"></div>
+      <button type="button" class="submit-btn" id="submit-btn">העתקת התשובות ושליחה בוואטסאפ 📱</button>
+
+      <div class="payment-card">
+        <h3>💳 תשלום עבור דוח הלייזר</h3>
+        <div class="payment-price">197 ₪</div>
+        <div class="payment-note-body">ניתן לשלם בביט או בפייבוקס למספר <span class="payment-phone">052-4835507</span></div>
+        <div class="payment-buttons">
+          <a href="#" class="btn-pay-bit" id="bit-pay-link" target="_blank" rel="noopener">שלמ/י עם Bit 💙</a>
+          <button type="button" class="btn-copy-pay" id="copy-pay-btn">העתקת פרטי תשלום</button>
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  // ---------- CONFIG ----------
+  // מספר הוואטסאפ של המאמנת (כולל קידומת מדינה, ללא + או 00 בהתחלה)
+  var COACH_WHATSAPP_NUMBER = "972524835507";
+
+  // אם קיים לינק "בקשת תשלום" שנוצר בתוך אפליקציית Bit (Bit -> יצירת בקשת תשלום -> שיתוף קישור),
+  // יש להדביק אותו כאן בין המרכאות. כל עוד השדה ריק, כפתור ה-Bit יעתיק את פרטי התשלום במקום לפתוח קישור.
+  var BIT_PAYMENT_LINK = "";
+  var PAYMENT_PHONE = "052-4835507";
+  var PAYMENT_AMOUNT = "197 ₪";
+
+  var TOTAL_FIELDS = 27; // 2 שאלות פתוחות + 25 שאלות אמריקאיות
+
+  var questionTitles = {
+    1: "כשמישהו מעניק לך הערכה עמוקה, מחמאה גדולה או רצון אמיתי להתקרב",
+    2: "כשקשר קרוב מתחיל להתייצב ולהרגיש בטוח",
+    3: "איך נראות בדרך כלל הציפיות שלך מאנשים קרובים",
+    4: "כאשר נכנס לחייך שפע בלתי צפוי",
+    5: "כאשר מתעוררת אי-הבנה או ריחוק זמני בקשר חשוב",
+    6: "כשדעתך שונה ממה שנאמר בקבוצה",
+    7: "עד כמה ברור לך מה הרצונות והצרכים שלך",
+    8: "כשתוכנית או יעד לא מסתדרים כמתוכנן",
+    9: "איך את/ה מגיב/ה כשמישהו עוקץ או מזלזל בך",
+    10: "כששואלים אותך מי את/ה ומה הערך המיוחד שלך",
+    11: "כשמציף אותך רגש עז של עצב, פחד, כאב או בכי",
+    12: "איך את/ה מגיב/ה כשמישהו בסביבתך נשבר או בוכה",
+    13: "בתקופות של מתח מתמשך מה קורה לגוף",
+    14: "מה שלומך כרגע",
+    15: "מתי שיתפת אדם קרוב בפגיעות אמיתית",
+    16: "כשאת/ה ניגש/ת לקדם יעד חדש",
+    17: "איך נחווית אצלך רכות והכלה",
+    18: "מול נוכחות אסרטיבית או דומיננטית",
+    19: "ביחסים אינטימיים ובחיבור למיניות",
+    20: "כשמגיע הרגע לקבל החלטות אסטרטגיות",
+    21: "תחושת הבסיס שלך מול העולם",
+    22: "כשדברים מסתדרים בקלות רבה מדי",
+    23: "כשעומדת בפניך הזדמנות לשינוי משמעותי",
+    24: "מקום לשמחה וקלילות ביום שלך",
+    25: "כשמתעורר אתגר או משבר בלתי צפוי"
+  };
+
+  var form = document.getElementById('quiz-form');
+  var progressFill = document.getElementById('progress-fill');
+  var progressPercent = document.getElementById('progress-percent');
+  var incompleteNote = document.getElementById('incomplete-note');
+  var toastEl = document.getElementById('toast');
+
+  function countFilled(){
+    var filled = 0;
+
+    var o1 = document.getElementById('open1').value.trim();
+    var o2 = document.getElementById('open2').value.trim();
+    if(o1.length > 0) filled++;
+    if(o2.length > 0) filled++;
+
+    for(var i = 1; i <= 25; i++){
+      var checked = form.querySelector('input[name="q' + i + '"]:checked');
+      if(checked) filled++;
+    }
+    return filled;
+  }
+
+  function updateProgress(){
+    var filled = countFilled();
+    var pct = Math.round((filled / TOTAL_FIELDS) * 100);
+    progressFill.style.width = pct + '%';
+    progressPercent.textContent = pct + '%';
+  }
+
+  form.addEventListener('input', updateProgress);
+  form.addEventListener('change', updateProgress);
+  updateProgress();
+
+  function showToast(msg, duration){
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    window.clearTimeout(showToast._t);
+    showToast._t = window.setTimeout(function(){
+      toastEl.classList.remove('show');
+    }, duration || 2600);
+  }
+
+  function buildMessage(){
+    var open1 = document.getElementById('open1').value.trim();
+    var open2 = document.getElementById('open2').value.trim();
+
+    var lines = [];
+    lines.push('🪞 *מראת התודעה - תשובות השאלון* 🪞');
+    lines.push('');
+    lines.push('*שאלה 1 - היכן נעצרת הזרימה:*');
+    lines.push(open1 || '(לא נענתה)');
+    lines.push('');
+    lines.push('*שאלה 2 - חשבון הנפש של היומיום:*');
+    lines.push(open2 || '(לא נענתה)');
+    lines.push('');
+    lines.push('*בחירות (25 שאלות):*');
+
+    for(var i = 1; i <= 25; i++){
+      var checked = form.querySelector('input[name="q' + i + '"]:checked');
+      var val = checked ? checked.value : '—';
+      lines.push(i + '-' + val);
+    }
+
+    return lines.join('\n');
+  }
+
+  function findFirstMissing(){
+    var o1 = document.getElementById('open1').value.trim();
+    if(o1.length === 0) return { type: 'open', id: 'open1', label: 'שאלה פתוחה 1' };
+
+    var o2 = document.getElementById('open2').value.trim();
+    if(o2.length === 0) return { type: 'open', id: 'open2', label: 'שאלה פתוחה 2' };
+
+    for(var i = 1; i <= 25; i++){
+      var checked = form.querySelector('input[name="q' + i + '"]:checked');
+      if(!checked){
+        return { type: 'radio', id: i, label: 'שאלה ' + i };
+      }
+    }
+    return null;
+  }
+
+  document.getElementById('submit-btn').addEventListener('click', function(){
+    var missing = findFirstMissing();
+
+    if(missing){
+      incompleteNote.textContent = 'נראה שנשארו שדות ריקים — לדוגמה: ' + missing.label + '. אפשר להשלים ואז לשלוח 🙏';
+      var target = (missing.type === 'open')
+        ? document.getElementById(missing.id)
+        : document.querySelector('.card[data-q="' + missing.id + '"]');
+      if(target){
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+
+    incompleteNote.textContent = '';
+    var message = buildMessage();
+    var encoded = encodeURIComponent(message);
+
+    // ניסיון להעתיק ללוח
+    var copiedOk = false;
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(message).then(function(){
+        showToast('התשובות הועתקו בהצלחה! 💜 פותח/ת וואטסאפ...');
+      }).catch(function(){
+        showToast('פותח/ת וואטסאפ עם התשובות...');
+      });
+    } else {
+      showToast('פותח/ת וואטסאפ עם התשובות...');
+    }
+
+    var waUrl = 'https://wa.me/' + COACH_WHATSAPP_NUMBER + '?text=' + encoded;
+    window.setTimeout(function(){
+      window.open(waUrl, '_blank');
+    }, 500);
+  });
+
+  // ---------- כפתורי תשלום ----------
+  var paymentDetailsText = PAYMENT_PHONE + ' | ' + PAYMENT_AMOUNT;
+
+  function copyPaymentDetails(){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(paymentDetailsText).then(function(){
+        showToast('פרטי התשלום הועתקו: ' + paymentDetailsText);
+      }).catch(function(){
+        showToast('פרטי התשלום: ' + paymentDetailsText);
+      });
+    } else {
+      showToast('פרטי התשלום: ' + paymentDetailsText);
+    }
+  }
+
+  var bitLink = document.getElementById('bit-pay-link');
+  if(BIT_PAYMENT_LINK){
+    bitLink.setAttribute('href', BIT_PAYMENT_LINK);
+  } else {
+    bitLink.addEventListener('click', function(e){
+      e.preventDefault();
+      copyPaymentDetails();
+    });
+  }
+
+  document.getElementById('copy-pay-btn').addEventListener('click', copyPaymentDetails);
+</script>
+
+</body>
+</html>
